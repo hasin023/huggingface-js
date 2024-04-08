@@ -1,61 +1,56 @@
 import { Context, Elysia } from "elysia"
-import { ImageToText, SummarizeContent } from "./handlers"
+import {
+  ImageToText,
+  SummarizeContent,
+  FillMasked,
+  Translate,
+} from "./handlers"
+import handleRequest from "../../utils/handleRequest"
 
-const imageToTextRoutes = new Elysia({
+const modelRoutes = new Elysia({
   prefix: "/models",
 })
   .post("/imageToText", async ({ body, set }: Context) => {
-    try {
-      interface ImageToTextRequest {
-        imgURL: string
-        model: string
-      }
-
-      const { imgURL, model } = body as ImageToTextRequest
-      const response = await ImageToText(imgURL, model)
-
-      if (!response) {
-        set.status = 501
-        console.log("Error: Image to text failed")
-      } else {
-        set.status = 200
-        set.headers["Content-Type"] = "application/json"
-
-        console.log("Response Status: Successful")
-        return new Response(JSON.stringify(response))
-      }
-    } catch (error) {
-      console.error("Error:", error)
-      set.status = 400
-      return new Response("Bad request")
+    interface ImageToTextRequest {
+      imgURL: string
+      model: string
     }
+    const { imgURL, model } = body as ImageToTextRequest
+    return handleRequest(ImageToText.bind(null, imgURL, model), body, set)
   })
   .post("/summary", async ({ body, set }: Context) => {
-    try {
-      interface SummaryContent {
-        content: string
-        model: string
-        maxLength: number
-      }
-
-      const { content, model, maxLength } = body as SummaryContent
-      const response = await SummarizeContent(content, model, maxLength)
-
-      if (!response) {
-        set.status = 501
-        console.log("Error: Image to text failed")
-      } else {
-        set.status = 200
-        set.headers["Content-Type"] = "application/json"
-
-        console.log("Response Status: Successful")
-        return new Response(JSON.stringify(response))
-      }
-    } catch (error) {
-      console.error("Error:", error)
-      set.status = 400
-      return new Response("Bad request")
+    interface SummaryContent {
+      content: string
+      model: string
+      maxLength: number
     }
+    const { content, model, maxLength } = body as SummaryContent
+    return handleRequest(
+      SummarizeContent.bind(null, content, model, maxLength),
+      body,
+      set
+    )
+  })
+  .post("/fillmask", async ({ body, set }: Context) => {
+    interface MaskingContent {
+      inputs: string
+      model: string
+    }
+    const { inputs, model } = body as MaskingContent
+    return handleRequest(FillMasked.bind(null, inputs, model), body, set)
+  })
+  .post("/translate", async ({ body, set }: Context) => {
+    interface TranslateContent {
+      inputs: string
+      model: string
+      parameters: any
+    }
+    const { inputs, model, parameters } = body as TranslateContent
+    return handleRequest(
+      Translate.bind(null, inputs, model, parameters),
+      body,
+      set
+    )
   })
 
-export default imageToTextRoutes
+export default modelRoutes

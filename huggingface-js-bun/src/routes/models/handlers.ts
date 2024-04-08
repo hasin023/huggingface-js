@@ -28,4 +28,22 @@ const SummarizeContent = async (
   return result
 }
 
-export { ImageToText, SummarizeContent }
+const FillMasked = async (inputs: string, model: string) => {
+  const result = await hf.fillMask({
+    model: model,
+    inputs: inputs,
+  })
+
+  return result
+}
+
+const Translate = async (inputs: string, model: string, parameters: any) => {
+  const result = await hf.translation({
+    model: model,
+    inputs: inputs,
+  })
+
+  return result
+}
+
+export { ImageToText, SummarizeContent, FillMasked, Translate }
