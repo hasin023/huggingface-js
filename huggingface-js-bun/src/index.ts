@@ -4,14 +4,12 @@ import swagger from "@elysiajs/swagger"
 const app = new Elysia()
 
 // Routes
-import imageToTextRoutes from "./routes/imageToText"
-import summaryRoutes from "./routes/summarization"
+import imageToTextRoutes from "./routes/models"
 
 app
   .use(swagger())
   .group("/api", (app) => {
     app.use(imageToTextRoutes)
-    app.use(summaryRoutes)
 
     return app
   })
