@@ -9,6 +9,7 @@ import {
   AnswerTableQuestion,
   ClassifyText,
   GenerateText,
+  ClassifyToken,
 } from "./handlers"
 import {
   ImageToTextSchema,
@@ -18,6 +19,7 @@ import {
   TableQuestionSchema,
   TextClassificationSchema,
   TextGenerationSchema,
+  TokenClassificationSchema,
   TranslateContentSchema,
 } from "../../Types/types"
 
@@ -77,6 +79,10 @@ const modelRoutes = new Elysia({
       body,
       set
     )
+  })
+  .post("/classifyToken", async ({ body, set }: Context) => {
+    const { model, inputs } = body as TokenClassificationSchema
+    return handleRequest(ClassifyToken.bind(null, model, inputs), body, set)
   })
 
 export default modelRoutes

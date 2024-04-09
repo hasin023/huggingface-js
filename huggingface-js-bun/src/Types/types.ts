@@ -42,3 +42,7 @@ export interface TextGenerationSchema extends LLMSchema {
   inputs: string
   parameters?: any
 }
+
+export interface TokenClassificationSchema extends LLMSchema {
+  inputs: string
+}

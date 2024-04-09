@@ -104,3 +104,12 @@ export const GenerateText = async (
 
   return result
 }
+
+export const ClassifyToken = async (model: string, inputs: string) => {
+  const result = await hf.tokenClassification({
+    model: model,
+    inputs: inputs,
+  })
+
+  return result
+}
