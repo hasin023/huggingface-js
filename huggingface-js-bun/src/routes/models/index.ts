@@ -6,12 +6,14 @@ import {
   FillMasked,
   Translate,
   AnswerQuestion,
+  AnswerTableQuestion,
 } from "./handlers"
 import {
   ImageToTextSchema,
   MaskingContentSchema,
   QuestionAnswerSchema,
   SummaryContentSchema,
+  TableQuestionSchema,
   TranslateContentSchema,
 } from "../../Types/types"
 
@@ -47,6 +49,15 @@ const modelRoutes = new Elysia({
     const { question, context } = inputs
     return handleRequest(
       AnswerQuestion.bind(null, question, context, model),
+      body,
+      set
+    )
+  })
+  .post("/tableqna", async ({ body, set }: Context) => {
+    const { model, inputs } = body as TableQuestionSchema
+    const { query, table } = inputs
+    return handleRequest(
+      AnswerTableQuestion.bind(null, model, query, table),
       body,
       set
     )

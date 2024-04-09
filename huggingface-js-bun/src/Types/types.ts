@@ -27,3 +27,11 @@ export type QuestionAnswerSchema = {
     context: string
   }
 }
+
+export type TableQuestionSchema = {
+  model: string
+  inputs: {
+    query: string
+    table: any
+  }
+}

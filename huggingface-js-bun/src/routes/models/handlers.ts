@@ -62,4 +62,27 @@ const AnswerQuestion = async (
   return result
 }
 
-export { ImageToText, SummarizeContent, FillMasked, Translate, AnswerQuestion }
+const AnswerTableQuestion = async (
+  model: string,
+  query: string,
+  table: any
+) => {
+  const result = await hf.tableQuestionAnswering({
+    model: model,
+    inputs: {
+      query: query,
+      table: table,
+    },
+  })
+
+  return result
+}
+
+export {
+  ImageToText,
+  SummarizeContent,
+  FillMasked,
+  Translate,
+  AnswerQuestion,
+  AnswerTableQuestion,
+}
