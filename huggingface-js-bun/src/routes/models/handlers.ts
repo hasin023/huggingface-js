@@ -46,4 +46,20 @@ const Translate = async (inputs: string, model: string, parameters: any) => {
   return result
 }
 
-export { ImageToText, SummarizeContent, FillMasked, Translate }
+const AnswerQuestion = async (
+  question: string,
+  context: string,
+  model: string
+) => {
+  const result = await hf.questionAnswering({
+    model: model,
+    inputs: {
+      question: question,
+      context: context,
+    },
+  })
+
+  return result
+}
+
+export { ImageToText, SummarizeContent, FillMasked, Translate, AnswerQuestion }
