@@ -1,6 +1,6 @@
 import hf from "../../config/huggingFace"
 
-const ImageToText = async (imgURL: string, model: string) => {
+export const ImageToText = async (imgURL: string, model: string) => {
   const response = await fetch(imgURL)
   const imageBlob = await response.blob()
 
@@ -12,7 +12,7 @@ const ImageToText = async (imgURL: string, model: string) => {
   return result
 }
 
-const SummarizeContent = async (
+export const SummarizeContent = async (
   content: string,
   model: string,
   maxLength: number
@@ -28,7 +28,7 @@ const SummarizeContent = async (
   return result
 }
 
-const FillMasked = async (inputs: string, model: string) => {
+export const FillMasked = async (inputs: string, model: string) => {
   const result = await hf.fillMask({
     model: model,
     inputs: inputs,
@@ -37,7 +37,11 @@ const FillMasked = async (inputs: string, model: string) => {
   return result
 }
 
-const Translate = async (inputs: string, model: string, parameters: any) => {
+export const Translate = async (
+  inputs: string,
+  model: string,
+  parameters: any
+) => {
   const result = await hf.translation({
     model: model,
     inputs: inputs,
@@ -46,7 +50,7 @@ const Translate = async (inputs: string, model: string, parameters: any) => {
   return result
 }
 
-const AnswerQuestion = async (
+export const AnswerQuestion = async (
   question: string,
   context: string,
   model: string
@@ -62,7 +66,7 @@ const AnswerQuestion = async (
   return result
 }
 
-const AnswerTableQuestion = async (
+export const AnswerTableQuestion = async (
   model: string,
   query: string,
   table: any
@@ -78,11 +82,25 @@ const AnswerTableQuestion = async (
   return result
 }
 
-export {
-  ImageToText,
-  SummarizeContent,
-  FillMasked,
-  Translate,
-  AnswerQuestion,
-  AnswerTableQuestion,
+export const ClassifyText = async (model: string, inputs: string) => {
+  const result = await hf.textClassification({
+    model: model,
+    inputs: inputs,
+  })
+
+  return result
+}
+
+export const GenerateText = async (
+  model: string,
+  inputs: string,
+  parameters?: any
+) => {
+  const result = await hf.textGeneration({
+    model: model,
+    inputs: inputs,
+    parameters: parameters,
+  })
+
+  return result
 }

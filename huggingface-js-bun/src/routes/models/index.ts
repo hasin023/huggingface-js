@@ -7,6 +7,8 @@ import {
   Translate,
   AnswerQuestion,
   AnswerTableQuestion,
+  ClassifyText,
+  GenerateText,
 } from "./handlers"
 import {
   ImageToTextSchema,
@@ -14,6 +16,8 @@ import {
   QuestionAnswerSchema,
   SummaryContentSchema,
   TableQuestionSchema,
+  TextClassificationSchema,
+  TextGenerationSchema,
   TranslateContentSchema,
 } from "../../Types/types"
 
@@ -58,6 +62,18 @@ const modelRoutes = new Elysia({
     const { query, table } = inputs
     return handleRequest(
       AnswerTableQuestion.bind(null, model, query, table),
+      body,
+      set
+    )
+  })
+  .post("/classify", async ({ body, set }: Context) => {
+    const { model, inputs } = body as TextClassificationSchema
+    return handleRequest(ClassifyText.bind(null, model, inputs), body, set)
+  })
+  .post("/generate", async ({ body, set }: Context) => {
+    const { model, inputs, parameters } = body as TextGenerationSchema
+    return handleRequest(
+      GenerateText.bind(null, model, inputs, parameters),
       body,
       set
     )
