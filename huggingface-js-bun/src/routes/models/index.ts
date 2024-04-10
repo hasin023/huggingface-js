@@ -16,6 +16,8 @@ import {
   ClassifyImage,
   ClassifyObject,
   ImageSegment,
+  ImageText,
+  TextToImage,
 } from "./handlers"
 import {
   ImageClassificationSchema,
@@ -27,6 +29,7 @@ import {
   TableQuestionSchema,
   TextClassificationSchema,
   TextGenerationSchema,
+  TextToImageSchema,
   TextToSpeechSchema,
   TokenClassificationSchema,
   TranslateContentSchema,
@@ -127,6 +130,18 @@ const modelRoutes = new Elysia({
   .post("/imageSegment", async ({ body, set }: Context) => {
     const { model, data } = body as ImageClassificationSchema
     return handleRequest(ImageSegment.bind(null, model, data), body, set)
+  })
+  .post("/imageText", async ({ body, set }: Context) => {
+    const { model, data } = body as ImageClassificationSchema
+    return handleRequest(ImageText.bind(null, model, data), body, set)
+  })
+  .post("/textToImage", async ({ body, set }: Context) => {
+    const { model, inputs, parameters } = body as TextToImageSchema
+    return handleRequest(
+      TextToImage.bind(null, model, inputs, parameters),
+      body,
+      set
+    )
   })
 
 export default modelRoutes

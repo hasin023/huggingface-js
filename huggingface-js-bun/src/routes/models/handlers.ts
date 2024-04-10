@@ -1,5 +1,6 @@
 import hf from "../../config/huggingFace"
 const fs = require("fs")
+const path = require("path")
 
 export const ImageToText = async (imgURL: string, model: string) => {
   const response = await fetch(imgURL)
@@ -181,4 +182,67 @@ export const ImageSegment = async (model: string, data: string) => {
   })
 
   return result
+}
+
+export const ImageText = async (model: string, data: string) => {
+  const result = await hf.imageToText({
+    model: model,
+    data: fs.readFileSync(data),
+  })
+
+  return result
+}
+
+export const TextToImage = async (
+  model: string,
+  inputs: string,
+  parameters?: any
+) => {
+  const response = await hf.textToImage({
+    model: model,
+    inputs: inputs,
+    parameters: parameters,
+  })
+
+  const imageBlob = response
+  console.log(imageBlob)
+  const img: any = await blobToImage(imageBlob)
+
+  console.log(img)
+
+  const directory = path.join(__dirname, "../../../assets")
+  const fileName = "generated_image.png"
+
+  const filePath = path.join(directory, fileName)
+
+  const canvas = document.createElement("canvas")
+  canvas.width = img.width
+  canvas.height = img.height
+  const ctx = canvas.getContext("2d")
+  ctx?.drawImage(img, 0, 0)
+
+  const buffer = canvas.toDataURL().replace(/^data:image\/\w+;base64,/, "")
+  const imageBuffer = Buffer.from(buffer, "base64")
+
+  fs.writeFile(filePath, imageBuffer, (err: any) => {
+    if (err) {
+      console.error("Error saving image:", err)
+    } else {
+      console.log(`Image saved as ${filePath}`)
+    }
+  })
+
+  return true
+}
+
+const blobToImage = (blob: Blob) => {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(blob)
+    let img = new Image()
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      resolve(img)
+    }
+    img.src = url
+  })
 }

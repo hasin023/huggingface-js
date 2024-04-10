@@ -68,3 +68,8 @@ export interface TextToSpeechSchema extends LLMSchema {
 export interface ImageClassificationSchema extends LLMSchema {
   data: string
 }
+
+export interface TextToImageSchema extends LLMSchema {
+  inputs: string
+  parameters?: any
+}
