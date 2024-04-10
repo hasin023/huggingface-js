@@ -60,3 +60,11 @@ export interface SimilarSentenceSchema extends LLMSchema {
     sentences: string[]
   }
 }
+
+export interface TextToSpeechSchema extends LLMSchema {
+  inputs: string
+}
+
+export interface ImageClassificationSchema extends LLMSchema {
+  data: string
+}

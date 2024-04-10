@@ -1,4 +1,5 @@
 import hf from "../../config/huggingFace"
+const fs = require("fs")
 
 export const ImageToText = async (imgURL: string, model: string) => {
   const response = await fetch(imgURL)
@@ -141,6 +142,42 @@ export const SentenceSimilarity = async (
       source_sentence: source_sentence,
       sentences: sentences,
     },
+  })
+
+  return result
+}
+
+export const TextToSpeech = async (model: string, inputs: string) => {
+  const result = await hf.textToSpeech({
+    model: model,
+    inputs: inputs,
+  })
+
+  return result
+}
+
+export const ClassifyImage = async (model: string, data: string) => {
+  const result = await hf.imageClassification({
+    model: model,
+    data: fs.readFileSync(data),
+  })
+
+  return result
+}
+
+export const ClassifyObject = async (model: string, data: string) => {
+  const result = await hf.objectDetection({
+    model: model,
+    data: fs.readFileSync(data),
+  })
+
+  return result
+}
+
+export const ImageSegment = async (model: string, data: string) => {
+  const result = await hf.imageSegmentation({
+    model: model,
+    data: fs.readFileSync(data),
   })
 
   return result
