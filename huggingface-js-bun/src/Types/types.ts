@@ -17,7 +17,7 @@ export interface MaskingContentSchema extends LLMSchema {
 
 export interface TranslateContentSchema extends LLMSchema {
   inputs: string
-  parameters: any
+  parameters?: any
 }
 
 export interface QuestionAnswerSchema extends LLMSchema {
@@ -45,4 +45,18 @@ export interface TextGenerationSchema extends LLMSchema {
 
 export interface TokenClassificationSchema extends LLMSchema {
   inputs: string
+}
+
+export interface ZeroShotSchema extends LLMSchema {
+  inputs: string[]
+  parameters: {
+    candidate_labels: string[]
+  }
+}
+
+export interface SimilarSentenceSchema extends LLMSchema {
+  inputs: {
+    source_sentence: string
+    sentences: string[]
+  }
 }

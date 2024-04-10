@@ -10,17 +10,21 @@ import {
   ClassifyText,
   GenerateText,
   ClassifyToken,
+  ZeroShotClassify,
+  SentenceSimilarity,
 } from "./handlers"
 import {
   ImageToTextSchema,
   MaskingContentSchema,
   QuestionAnswerSchema,
+  SimilarSentenceSchema,
   SummaryContentSchema,
   TableQuestionSchema,
   TextClassificationSchema,
   TextGenerationSchema,
   TokenClassificationSchema,
   TranslateContentSchema,
+  ZeroShotSchema,
 } from "../../Types/types"
 
 const modelRoutes = new Elysia({
@@ -83,6 +87,24 @@ const modelRoutes = new Elysia({
   .post("/classifyToken", async ({ body, set }: Context) => {
     const { model, inputs } = body as TokenClassificationSchema
     return handleRequest(ClassifyToken.bind(null, model, inputs), body, set)
+  })
+  .post("/zeroshotclassify", async ({ body, set }: Context) => {
+    const { model, inputs, parameters } = body as ZeroShotSchema
+    const { candidate_labels } = parameters
+    return handleRequest(
+      ZeroShotClassify.bind(null, model, inputs, candidate_labels),
+      body,
+      set
+    )
+  })
+  .post("/similarity", async ({ body, set }: Context) => {
+    const { model, inputs } = body as SimilarSentenceSchema
+    const { source_sentence, sentences } = inputs
+    return handleRequest(
+      SentenceSimilarity.bind(null, model, source_sentence, sentences),
+      body,
+      set
+    )
   })
 
 export default modelRoutes

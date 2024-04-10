@@ -40,7 +40,7 @@ export const FillMasked = async (inputs: string, model: string) => {
 export const Translate = async (
   inputs: string,
   model: string,
-  parameters: any
+  parameters?: any
 ) => {
   const result = await hf.translation({
     model: model,
@@ -109,6 +109,38 @@ export const ClassifyToken = async (model: string, inputs: string) => {
   const result = await hf.tokenClassification({
     model: model,
     inputs: inputs,
+  })
+
+  return result
+}
+
+export const ZeroShotClassify = async (
+  model: string,
+  inputs: string[],
+  candidate_labels: string[]
+) => {
+  const result = await hf.zeroShotClassification({
+    model: model,
+    inputs: inputs,
+    parameters: {
+      candidate_labels: candidate_labels,
+    },
+  })
+
+  return result
+}
+
+export const SentenceSimilarity = async (
+  model: string,
+  source_sentence: string,
+  sentences: string[]
+) => {
+  const result = await hf.sentenceSimilarity({
+    model: model,
+    inputs: {
+      source_sentence: source_sentence,
+      sentences: sentences,
+    },
   })
 
   return result
